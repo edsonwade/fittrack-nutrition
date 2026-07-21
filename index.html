@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Nutrição — Vanilson</title>
+<style>
+:root{
+  --paper:#f6f2ea; --paper2:#efe9dd; --ink:#211c16; --ink2:#4a4239; --faint:#8a8073;
+  --line:#d8cfbf; --line2:#c4b9a5; --accent:#7a3b2e; --gold:#9a7b3f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  line-height:1.62;-webkit-font-smoothing:antialiased;font-size:17px}
+.serif{font-family:inherit}
+.sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:0 26px}
+
+/* MASTHEAD */
+.mast{border-bottom:2px solid var(--ink);padding:42px 0 22px;margin-bottom:6px}
+.kicker{font-family:-apple-system,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:16px}
+.mast h1{font-size:clamp(34px,7vw,60px);line-height:1.04;font-weight:600;letter-spacing:-.6px}
+.mast .sub{font-size:19px;color:var(--ink2);font-style:italic;margin-top:16px;max-width:640px}
+.mast .meta{font-family:-apple-system,"Segoe UI",sans-serif;font-size:12.5px;letter-spacing:.04em;
+  color:var(--faint);margin-top:22px;display:flex;flex-wrap:wrap;gap:6px 20px;text-transform:uppercase}
+.mast .meta b{color:var(--ink);font-weight:600}
+
+/* SECTION */
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.sec-num{font-family:-apple-system,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.3em;
+  color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:10px}
+h2{font-size:clamp(26px,4.5vw,36px);font-weight:600;letter-spacing:-.4px;line-height:1.1;margin-bottom:8px}
+.lead{font-size:18px;color:var(--ink2);max-width:640px;margin-bottom:22px;font-style:italic}
+h3{font-size:21px;font-weight:600;margin:26px 0 10px}
+p{margin-bottom:14px;color:var(--ink2)}
+p strong,li strong{color:var(--ink);font-weight:600}
+.drop::first-letter{initial-letter:2;-webkit-initial-letter:2;color:var(--accent);font-weight:600;margin-right:8px}
+
+/* MACRO BOARD */
+.macros{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line2);
+  background:var(--paper2);margin:8px 0 6px}
+@media(max-width:640px){.macros{grid-template-columns:repeat(2,1fr)}}
+.macro{padding:20px 14px;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.macro:last-child{border-right:0}
+.macro .n{font-size:32px;font-weight:600;letter-spacing:-1px}
+.macro .u{font-size:13px;color:var(--faint)}
+.macro .l{font-family:-apple-system,"Segoe UI",sans-serif;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent);margin-top:6px;font-weight:600}
+.macro .pct{font-size:11px;color:var(--faint);margin-top:2px}
+
+/* CAROUSEL */
+.carou{margin:14px -26px 0;position:relative}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:20px;padding:6px 26px 20px;
+  scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.day{flex:0 0 86%;max-width:520px;scroll-snap-align:center;background:#fbf8f2;
+  border:1px solid var(--line2);border-radius:2px;padding:26px 26px 22px;
+  box-shadow:0 1px 0 var(--line),0 18px 30px -26px rgba(33,28,22,.5)}
+@media(min-width:720px){.day{flex-basis:60%}}
+.day-h{display:flex;align-items:baseline;justify-content:space-between;
+  border-bottom:1.5px solid var(--ink);padding-bottom:12px;margin-bottom:6px}
+.day-h .d{font-size:26px;font-weight:600}
+.day-h .t{font-family:-apple-system,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:600;padding:4px 10px;border:1px solid var(--line2);border-radius:999px}
+.t.train{color:var(--accent);border-color:var(--accent)}
+.t.rest{color:var(--faint)}
+.meal{padding:15px 0;border-bottom:1px solid var(--line)}
+.meal:last-child{border-bottom:0}
+.meal .cat{font-family:-apple-system,"Segoe UI",sans-serif;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent);font-weight:600}
+.meal .nm{font-size:18px;font-weight:600;margin:3px 0 2px}
+.meal .it{font-size:14px;color:var(--ink2);font-style:italic}
+.meal .mac{font-family:-apple-system,"Segoe UI",sans-serif;font-size:12px;color:var(--faint);
+  margin-top:8px;display:flex;gap:12px;flex-wrap:wrap}
+.meal .mac b{color:var(--ink);font-weight:600}
+.meal .mac .kcal{color:var(--accent);font-weight:700}
+.day-tot{margin-top:14px;padding-top:12px;border-top:1.5px solid var(--ink);
+  font-family:-apple-system,"Segoe UI",sans-serif;font-size:12.5px;letter-spacing:.04em;
+  display:flex;justify-content:space-between;color:var(--ink)}
+.day-tot b{font-weight:700}
+
+.carou-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:6px}
+.arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:#fbf8f2;
+  cursor:pointer;font-size:18px;color:var(--ink);display:grid;place-items:center;transition:.15s}
+.arrow:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dots{display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.2s}
+.dot.on{background:var(--accent);transform:scale(1.35)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0 4px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:-apple-system,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);font-weight:600;border-bottom:1.5px solid var(--ink)}
+td .em{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+
+/* two-col cards */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.card{background:var(--paper2);border:1px solid var(--line);padding:20px 22px;border-radius:2px}
+.card h3{margin-top:0}
+ul.clean{list-style:none;margin:6px 0}
+ul.clean li{padding:7px 0 7px 20px;position:relative;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink2)}
+ul.clean li:last-child{border-bottom:0}
+ul.clean li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+.note{border-left:3px solid var(--accent);padding:4px 0 4px 16px;font-style:italic;color:var(--ink2);margin:16px 0}
+.stars{color:var(--gold);letter-spacing:2px}
+
+/* shopping columns */
+.shop{columns:2;column-gap:30px}
+@media(max-width:640px){.shop{columns:1}}
+.shop .grp{break-inside:avoid;margin-bottom:20px}
+.shop h4{font-family:-apple-system,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--line2);
+  padding-bottom:6px;margin-bottom:8px;font-weight:600}
+.shop ul{list-style:none}
+.shop li{font-size:14px;padding:4px 0;color:var(--ink2)}
+.shop li b{color:var(--ink);font-weight:600}
+
+footer{padding:40px 0 70px;text-align:center;color:var(--faint);font-size:13px;font-style:italic}
+.toc{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:-apple-system,"Segoe UI",sans-serif;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-top:24px}
+.toc a{color:var(--ink2);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.toc a:hover{color:var(--accent);border-color:var(--accent)}
+.disc{font-size:12.5px;color:var(--faint);text-align:center;padding:24px 0;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- MASTHEAD -->
+  <div class="mast">
+    <div class="kicker">Plano de Nutrição · Baseado em evidência · Portugal</div>
+    <h1>Comer para<br>chegar aos 70 kg.</h1>
+    <p class="sub">Um guia real para o dia a dia — perder gordura, preservar músculo e sustentar o resultado. Alinhado com o teu programa de força de 12 semanas.</p>
+    <div class="meta">
+      <span><b>Vanilson</b> · 37 anos</span>
+      <span><b>99 kg</b> → 70 kg</span>
+      <span>180 cm</span>
+      <span>Sem lactose</span>
+      <span>3 refeições + 1</span>
+    </div>
+    <nav class="toc">
+      <a href="#macros">Macros</a>
+      <a href="#semana">A Semana</a>
+      <a href="#compras">Compras</a>
+      <a href="#prep">Meal Prep</a>
+      <a href="#treino">Treino & Descanso</a>
+      <a href="#hidra">Hidratação</a>
+      <a href="#supl">Suplementos</a>
+      <a href="#subs">Substituições</a>
+      <a href="#fora">Comer Fora</a>
+      <a href="#prog">Progresso</a>
+    </nav>
+  </div>
+
+  <!-- MACROS -->
+  <section id="macros">
+    <div class="sec-num">§ 01 — Os números</div>
+    <h2>2 100 kcal por dia</h2>
+    <p class="lead">Manutenção estimada em ~2 700 kcal (Mifflin-St Jeor × 1,4). Um défice moderado de ~600 kcal aponta para <strong>~0,5–0,7 kg/semana</strong> — a zona ideal para preservar músculo.</p>
+    <div class="macros">
+      <div class="macro"><div class="n">2100</div><div class="u">kcal</div><div class="l">Energia</div><div class="pct">−600 défice</div></div>
+      <div class="macro"><div class="n">175<span class="u">g</span></div><div class="l">Proteína</div><div class="pct">33% · 1,75 g/kg</div></div>
+      <div class="macro"><div class="n">200<span class="u">g</span></div><div class="l">Hidratos</div><div class="pct">38%</div></div>
+      <div class="macro"><div class="n">65<span class="u">g</span></div><div class="l">Gordura</div><div class="pct">28%</div></div>
+      <div class="macro"><div class="n">30<span class="u">g</span></div><div class="l">Fibra</div><div class="pct">mín.</div></div>
+    </div>
+    <div class="note">Proteína alta e distribuída (~30–55 g por refeição) é o fator nº1 para não perder músculo em défice. Tudo o resto é ajuste fino.</div>
+  </section>
+
+  <!-- WEEK CAROUSEL -->
+  <section id="semana">
+    <div class="sec-num">§ 02 — Sete dias</div>
+    <h2>A semana, dia a dia</h2>
+    <p class="lead">Refeições em rotação para dar variedade. Desliza para navegar. Macros aproximados (±10%), todas as opções sem lactose.</p>
+    <div class="carou">
+      <div class="track" id="track"></div>
+    </div>
+    <div class="carou-nav">
+      <button class="arrow" id="prev" aria-label="Anterior">‹</button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="next" aria-label="Seguinte">›</button>
+    </div>
+  </section>
+
+  <!-- SHOPPING -->
+  <section id="compras">
+    <div class="sec-num">§ 03 — Lista de compras</div>
+    <h2>Uma semana, por categorias</h2>
+    <p class="lead">Quantidades aproximadas. Prioriza marca própria e congelados para poupar sem perder qualidade.</p>
+    <div class="shop" id="shop"></div>
+  </section>
+
+  <!-- MEAL PREP -->
+  <section id="prep">
+    <div class="sec-num">§ 04 — Meal prep</div>
+    <h2>90 minutos ao domingo</h2>
+    <p class="lead">Cozinhar em lote resolve a semana. Peixe fica para meio da semana, fresco.</p>
+    <div class="cols">
+      <div class="card">
+        <h3>Cozinhar (~90 min)</h3>
+        <ul class="clean">
+          <li><b>Proteínas em lote</b> (~40 min): ~1 kg de frango + peru no forno; 6 ovos cozidos.</li>
+          <li><b>Hidratos</b> (~25 min): panela de arroz e de quinoa; batata e batata-doce assadas.</li>
+          <li><b>Legumes</b> (~15 min): lavar/cortar; branquear brócolos e feijão-verde.</li>
+          <li><b>Grão/feijão</b>: escorrer e guardar.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Guardar & durar</h3>
+        <table>
+          <tr><td class="em">Frango / peru</td><td>3–4 dias frio</td></tr>
+          <tr><td class="em">Peixe cozinhado</td><td>2 dias (ou congelar cru)</td></tr>
+          <tr><td class="em">Arroz / quinoa / batata</td><td>3–4 dias frio</td></tr>
+          <tr><td class="em">Ovos cozidos (casca)</td><td>até 7 dias</td></tr>
+          <tr><td class="em">Feijoada / bacalhau</td><td>2–3 meses congelado</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAINING / REST -->
+  <section id="treino">
+    <div class="sec-num">§ 05 — Treino & descanso</div>
+    <h2>Comer à volta do treino</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>🏋️ Dias de treino</h3>
+        <p><strong>Pré (1,5–2 h antes):</strong> refeição normal com hidratos + proteína. Se treinas ao acordar: banana + café e o pequeno-almoço completo depois.</p>
+        <p><strong>Pós (até 1–2 h):</strong> ~30–40 g de proteína + hidratos. A janela é larga — o que conta é a proteína total do dia.</p>
+        <p><strong>Água no treino:</strong> 500 ml antes; 150–250 ml a cada 15–20 min. Em &lt;75 min, água chega.</p>
+      </div>
+      <div class="card">
+        <h3>😴 Dias de descanso</h3>
+        <p><strong>Proteína:</strong> igual (~180 g) — a recuperação faz-se no descanso.</p>
+        <p><strong>Hidratos:</strong> podes reduzir ~30–50 g e compensar com legumes.</p>
+        <p><strong>Gordura:</strong> podes subir +5–10 g.</p>
+        <div class="note" style="margin-bottom:0">Se preferires comer igual todos os dias, funciona. Simplicidade &gt; otimização marginal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HYDRATION -->
+  <section id="hidra">
+    <div class="sec-num">§ 06 — Hidratação</div>
+    <h2>~3 a 3,5 litros por dia</h2>
+    <table>
+      <thead><tr><th>Momento</th><th>Quantidade</th></tr></thead>
+      <tbody>
+        <tr><td class="em">Ao acordar</td><td>500 ml</td></tr>
+        <tr><td class="em">Manhã</td><td>750 ml</td></tr>
+        <tr><td class="em">Pré-treino (2 h antes)</td><td>500 ml</td></tr>
+        <tr><td class="em">Durante o treino</td><td>150–250 ml / 15–20 min</td></tr>
+        <tr><td class="em">Resto do dia</td><td>repor até ao alvo</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Eletrólitos só se suares muito. Uma pitada de sal + fruta/legumes chega. Urina amarela-clara = bem hidratado.</div>
+  </section>
+
+  <!-- SUPPLEMENTS -->
+  <section id="supl">
+    <div class="sec-num">§ 07 — Suplementação</div>
+    <h2>Primeiro a comida</h2>
+    <p class="lead">Só o que tem evidência. Nada de queimadores, detox ou milagres.</p>
+    <table>
+      <thead><tr><th>Suplemento</th><th>Evidência</th><th>Dose · quando</th><th>Porquê</th></tr></thead>
+      <tbody>
+        <tr><td class="em">Creatina monohidratada</td><td><span class="stars">★★★★★</span></td><td>3–5 g/dia · qualquer hora</td><td>Força, músculo, recuperação. Segura.</td></tr>
+        <tr><td class="em">Whey isolada (s/ lactose)</td><td><span class="stars">★★★★</span></td><td>25–30 g · pós-treino</td><td>Ajuda a bater a proteína diária.</td></tr>
+        <tr><td class="em">Vitamina D3</td><td><span class="stars">★★★★</span></td><td>1000–2000 UI · c/ refeição</td><td>Se houver défice (comum no inverno).</td></tr>
+        <tr><td class="em">Ómega-3</td><td><span class="stars">★★★</span></td><td>1–2 g · c/ refeição</td><td>Só se comeres pouco peixe gordo.</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Não indicaste medicação — se tomares algo, confirma creatina e vit. D com o médico.</div>
+  </section>
+
+  <!-- SUBSTITUTIONS -->
+  <section id="subs">
+    <div class="sec-num">§ 08 — Substituições</div>
+    <h2>Troca sem perder macros</h2>
+    <div class="cols">
+      <div class="card"><h3>Proteínas</h3><p>Frango → Peru → Atum/Pescada → Bacalhau → Lombo de porco → Tofu firme → Grão + feijão</p></div>
+      <div class="card"><h3>Hidratos</h3><p>Arroz → Massa integral → Batata → Batata-doce → Quinoa → Pão integral → Aveia</p></div>
+      <div class="card"><h3>Gorduras</h3><p>Azeite → Abacate → Nozes/Amêndoas → Manteiga de amendoim → Sementes</p></div>
+      <div class="card"><h3>Sem lactose</h3><p>Skyr s/ lactose → Iogurte de soja → Bebida vegetal enriquecida → Queijo curado (com moderação)</p></div>
+    </div>
+    <div class="note">Regra: proteína por proteína, hidrato por hidrato, gordura por gordura — em peso semelhante, os macros mantêm-se.</div>
+  </section>
+
+  <!-- EATING OUT -->
+  <section id="fora">
+    <div class="sec-num">§ 09 — Comer fora</div>
+    <h2>Escolher bem, à portuguesa</h2>
+    <table>
+      <thead><tr><th>Local</th><th>Escolhe</th><th>Modera</th></tr></thead>
+      <tbody>
+        <tr><td class="em">Churrasqueira</td><td>Frango/peru grelhado, salada, batata cozida</td><td>Fritos, pele, molhos</td></tr>
+        <tr><td class="em">Tradicional</td><td>Peixe/carne grelhada, legumes, sopa</td><td>Fritos, sobremesas, pão+manteiga</td></tr>
+        <tr><td class="em">Italiano</td><td>Massa com tomate + proteína, salada</td><td>Molhos de natas (lactose!), pizza</td></tr>
+        <tr><td class="em">Japonês</td><td>Sashimi, sushi, edamame, teriyaki grelhado</td><td>Tempura, molhos açucarados</td></tr>
+        <tr><td class="em">Hamburgueria</td><td>Burger simples s/ queijo + salada</td><td>Duplo queijo, molhos, batata grande</td></tr>
+        <tr><td class="em">Fast food</td><td>Grelhado, wrap de frango, salada</td><td>Fritos, menus grandes, refrigerante</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Uma refeição social por semana não estraga nada — faz parte da sustentabilidade.</div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section id="prog">
+    <div class="sec-num">§ 10 — Progresso</div>
+    <h2>Medir, e quando ajustar</h2>
+    <table>
+      <thead><tr><th>Indicador</th><th>Frequência</th><th>Como</th></tr></thead>
+      <tbody>
+        <tr><td class="em">Peso</td><td>Diário → média semanal</td><td>Manhã, em jejum</td></tr>
+        <tr><td class="em">Medidas</td><td>Quinzenal</td><td>Cintura, peito, anca, braço, coxa</td></tr>
+        <tr><td class="em">Fotografias</td><td>Quinzenal</td><td>Mesma luz e pose</td></tr>
+        <tr><td class="em">Força no treino</td><td>Contínuo</td><td>O teu log — se sobe, preservas músculo</td></tr>
+        <tr><td class="em">Energia · sono · fome</td><td>Semanal</td><td>Nota 1–10</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:18px">
+      <div class="card"><h3>Não desce?</h3><p>Se em 2–3 semanas a média de peso estagna → −150 kcal (menos ~35 g hidratos) ou mais passos.</p></div>
+      <div class="card"><h3>Desce depressa demais?</h3><p>Se perdes &gt;1 kg/semana ou a força cai muito → +150 kcal. Recalcula os macros a cada ~5 kg.</p></div>
+    </div>
+  </section>
+
+  <div class="disc">
+    Documento educativo — não substitui aconselhamento médico. As cargas calóricas são pontos de partida; recalibra com o progresso.<br>
+    Dados em falta (% de gordura, medicação, álcool/tabaco, água atual, preferências) afinam ainda mais o plano.
+  </div>
+
+  <footer>
+    Feito para o Vanilson · Técnica &amp; paciência · 80/20 &gt; perfeição
+  </footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const MEALS={
+ PA1:{cat:'Pequeno-almoço',nm:'Ovos mexidos & aveia',it:'3 ovos · 40 g aveia · bebida vegetal · banana · azeite',kcal:510,p:34,c:55,f:18},
+ PA2:{cat:'Pequeno-almoço',nm:'Iogurte proteico & granola',it:'200 g skyr s/ lactose · 30 g granola · manteiga amendoim · frutos vermelhos',kcal:500,p:40,c:45,f:16},
+ PA3:{cat:'Pequeno-almoço',nm:'Panqueca de aveia',it:'50 g aveia · 2 ovos + 1 clara · banana · canela',kcal:490,p:28,c:58,f:16},
+ PA4:{cat:'Pequeno-almoço',nm:'Tosta de ovo & abacate',it:'2 fatias pão integral · 2 ovos · abacate · peru',kcal:500,p:30,c:42,f:22},
+ A1:{cat:'Almoço',nm:'Frango & arroz',it:'200 g frango · 70 g arroz · brócolos · azeite',kcal:715,p:64,c:68,f:16},
+ A2:{cat:'Almoço',nm:'Peru & massa integral',it:'200 g peru · 70 g massa integral · courgette · tomate',kcal:705,p:63,c:66,f:15},
+ A3:{cat:'Almoço',nm:'Grão & atum',it:'150 g grão · atum · ovo · tomate · pimento (sem cozinhar)',kcal:640,p:52,c:55,f:20},
+ A4:{cat:'Almoço',nm:'Lombo de porco & batata',it:'200 g lombo · 300 g batata · feijão-verde',kcal:735,p:63,c:62,f:22},
+ A5:{cat:'Almoço',nm:'Feijoada magra',it:'feijão · 150 g frango desfiado · pouco chouriço · couve · arroz',kcal:710,p:56,c:70,f:20},
+ A6:{cat:'Almoço',nm:'Frango assado & legumes',it:'220 g frango · batata-doce · legumes assados',kcal:720,p:60,c:60,f:24},
+ J1:{cat:'Jantar',nm:'Pescada & batata-doce',it:'220 g pescada · batata-doce · espinafres',kcal:620,p:52,c:55,f:18},
+ J2:{cat:'Jantar',nm:'Salmão & legumes',it:'190 g salmão · legumes · arroz',kcal:680,p:50,c:45,f:30},
+ J3:{cat:'Jantar',nm:'Bife de peru & quinoa',it:'210 g peru · 60 g quinoa · salada',kcal:640,p:61,c:52,f:18},
+ J4:{cat:'Jantar',nm:'Bacalhau à Brás fit',it:'bacalhau · ovos · batata assada · cebola · salsa',kcal:610,p:50,c:45,f:24},
+ L1:{cat:'Lanche',nm:'Skyr & fruta',it:'200 g skyr s/ lactose · fruta · nozes',kcal:290,p:24,c:25,f:12},
+ L2:{cat:'Lanche',nm:'Ovos cozidos & fruta',it:'2 ovos cozidos · fruta · amêndoas',kcal:300,p:20,c:22,f:18},
+ L3:{cat:'Lanche',nm:'Batido proteico',it:'whey · bebida vegetal · banana · manteiga amendoim',kcal:310,p:32,c:30,f:8}
+};
+const WEEK=[
+ {d:'Segunda',tr:true, m:['PA1','A1','J1','L1']},
+ {d:'Terça',  tr:true, m:['PA2','A2','J2','L2']},
+ {d:'Quarta', tr:false,m:['PA3','A3','J3','L3']},
+ {d:'Quinta', tr:true, m:['PA1','A1','J4','L1']},
+ {d:'Sexta',  tr:true, m:['PA2','A4','J2','L2']},
+ {d:'Sábado', tr:false,m:['PA4','A5','J1','L3']},
+ {d:'Domingo',tr:false,m:['PA3','A6','J3','L1']}
+];
+
+/* ---------- RENDER CAROUSEL ---------- */
+const track=document.getElementById('track');
+track.innerHTML=WEEK.map(day=>{
+ let tot={kcal:0,p:0,c:0,f:0};
+ const meals=day.m.map(id=>{
+  const m=MEALS[id];tot.kcal+=m.kcal;tot.p+=m.p;tot.c+=m.c;tot.f+=m.f;
+  return `<div class="meal">
+    <div class="cat">${m.cat}</div>
+    <div class="nm">${m.nm}</div>
+    <div class="it">${m.it}</div>
+    <div class="mac"><span class="kcal">${m.kcal} kcal</span><span>P <b>${m.p}</b></span><span>HC <b>${m.c}</b></span><span>G <b>${m.f}</b></span></div>
+  </div>`;
+ }).join('');
+ return `<article class="day">
+   <div class="day-h"><div class="d">${day.d}</div>
+     <div class="t ${day.tr?'train':'rest'}">${day.tr?'🏋️ Treino':'😴 Descanso'}</div></div>
+   ${meals}
+   <div class="day-tot"><span>Total do dia</span>
+     <span><b>${tot.kcal}</b> kcal · P <b>${tot.p}</b> · HC <b>${tot.c}</b> · G <b>${tot.f}</b></span></div>
+ </article>`;
+}).join('');
+
+/* dots */
+const dots=document.getElementById('dots');
+WEEK.forEach((_,i)=>{const s=document.createElement('span');s.className='dot'+(i===0?' on':'');
+ s.onclick=()=>scrollTo(i);dots.appendChild(s);});
+const cards=[...track.children];
+function curIdx(){const c=track.scrollLeft+track.clientWidth/2;
+ let best=0,bd=1e9;cards.forEach((el,i)=>{const cc=el.offsetLeft+el.clientWidth/2;
+ const d=Math.abs(cc-(track.scrollLeft+track.clientWidth/2));if(d<bd){bd=d;best=i;}});return best;}
+function scrollTo(i){const el=cards[i];track.scrollTo({left:el.offsetLeft-(track.clientWidth-el.clientWidth)/2,behavior:'smooth'});}
+function upd(){const i=curIdx();[...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));}
+track.addEventListener('scroll',()=>{clearTimeout(window._t);window._t=setTimeout(upd,80);});
+document.getElementById('next').onclick=()=>scrollTo(Math.min(curIdx()+1,WEEK.length-1));
+document.getElementById('prev').onclick=()=>scrollTo(Math.max(curIdx()-1,0));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')scrollTo(Math.min(curIdx()+1,6));if(e.key==='ArrowLeft')scrollTo(Math.max(curIdx()-1,0));});
+
+/* ---------- SHOPPING LIST ---------- */
+const SHOP=[
+ ['🥩 Carnes',['Peito de frango — <b>~1,2 kg</b>','Bifes/peito de peru — <b>~900 g</b>','Lombo de porco — <b>~350 g</b>','Coxa de frango — <b>~400 g</b>','Chouriço magro — 1 pequeno']],
+ ['🐟 Peixe',['Pescada (congelada) — <b>~800 g</b>','Salmão — <b>~500 g</b>','Bacalhau demolhado — <b>~300 g</b>','Atum ao natural — <b>3 latas</b>']],
+ ['🥚 Ovos',['Ovos M/L — <b>2 dúzias</b>']],
+ ['🥛 Lacticínios s/ lactose',['Skyr sem lactose — <b>~1,4 kg</b>','Bebida vegetal enriquecida — <b>2 L</b>']],
+ ['🍎 Fruta',['Bananas — <b>~7</b>','Frutos vermelhos — <b>~500 g</b>','Fruta variada — <b>~7</b>','Limão — 2']],
+ ['🥦 Legumes',['Brócolos, espinafres, courgette','Pimentos, cebola, tomate','Feijão-verde, cenoura, couve','Salada mista — 2 sacos','Alho — 1']],
+ ['🧊 Congelados',['Legumes salteados — 2 sacos','Espinafres/brócolos (backup)']],
+ ['🫘 Mercearia',['Arroz, massa integral, aveia, quinoa','Grão & feijão encarnado — <b>4 latas</b>','Batata & batata-doce — <b>~4 kg</b>','Granola s/ açúcar, manteiga amendoim','Nozes/amêndoas, azeite, abacate']],
+ ['🥤 Bebidas',['Água','Café']],
+ ['🧂 Temperos',['Sal, pimenta, colorau, orégãos','Alho em pó, canela, vinagre, mostarda']]
+];
+document.getElementById('shop').innerHTML=SHOP.map(g=>
+ `<div class="grp"><h4>${g[0]}</h4><ul>${g[1].map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('');
+
+upd();
+</script>
+</body>
+</html>
